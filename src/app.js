@@ -1,7 +1,6 @@
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-
+import * as THREE from ‘https://cdn.skypack.dev/three@0.132.2’;
+import { FBXLoader } from ‘https://cdn.skypack.dev/three@0.132.2/examples/jsm/loaders/FBXLoader.js’;
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 const canvas = document.querySelector('canvas.webgl');
 let mixer;
 const clock = new THREE.Clock();
@@ -20,7 +19,7 @@ scene.add(ambients, dLight);
 //3d Museum
 const loader = new GLTFLoader();
 loader.load(
-    'public/123.glb', // Replace with your GLB file path or Blob URL
+    '123.glb', // Replace with your GLB file path or Blob URL
     (gltf) => {
         const model = gltf.scene;
         scene.add(model);
