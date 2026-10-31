@@ -1,6 +1,7 @@
-import * as THREE from 'https://cdn.skypack.dev/three@0.132.2';
-import { FBXLoader } from 'https://skypack.dev';
-import { OrbitControls } from 'https://unpkg.com';
+import * as THREE from 'https://esm.sh';
+import { OrbitControls } from 'https://esm.sh/examples/jsm/controls/OrbitControls.js';
+import { FBXLoader } from 'https://esm.sh/examples/jsm/loaders/FBXLoader.js';
+
 
 const canvas = document.querySelector('canvas.webgl');
 let mixer;
