@@ -19,7 +19,7 @@ scene.add(ambients, dLight);
 // 3D museum
 const loader = new GLTFLoader();
 loader.load(
-    import.meta.env.BASE_URL + '123.glb',
+    import.meta.env.BASE_URL + '1234.glb',
     (gltf) => {
         const model = gltf.scene;
         scene.add(model);
