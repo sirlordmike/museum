@@ -1,105 +1,81 @@
-import * as THREE from 'https://esm.sh';
-import { OrbitControls } from 'https://esm.sh/examples/jsm/controls/OrbitControls.js';
-import { FBXLoader } from 'https://esm.sh/examples/jsm/loaders/FBXLoader.js';
-
-import { defineConfig } from 'vite'
-
-export default defineConfig({
-  base: '/sirlordmike/museum.git/',   // exactly your repository name, with slashes
-})
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 const canvas = document.querySelector('canvas.webgl');
 let mixer;
 const clock = new THREE.Clock();
 
-//scene
+// scene
 const scene = new THREE.Scene();
 
-//light
+// light
 const ambients = new THREE.AmbientLight(0xffffff, 2);
 const dLight = new THREE.DirectionalLight(0xffffff, 3);
-
+dLight.position.set(5, 10, 5);
 dLight.castShadow = true;
-//scene.add(new THREE.CameraHelper(dLight.shadow.camera));
 scene.add(ambients, dLight);
 
-//3d Museum
+// 3D museum
 const loader = new GLTFLoader();
 loader.load(
-    './123.glb', // Replace with your GLB file path or Blob URL
+    import.meta.env.BASE_URL + '123.glb',
     (gltf) => {
         const model = gltf.scene;
         scene.add(model);
-          // 1. Dig down into the GLB hierarchy
+
         model.traverse((child) => {
-        // Only Meshes (the actual 3D shapes) can cast or receive shadows
-        if (child.isMesh) {
-            
-            // OPTION A: Target ALL meshes on the character
-            child.castShadow = true;
-            child.receiveShadow = true;
-        }
-    });
-        // Check if the model has animations
+            if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        });
+
         if (gltf.animations && gltf.animations.length > 0) {
-            // Create the AnimationMixer and bind it to the model
             mixer = new THREE.AnimationMixer(model);
-            
-            // Play the first animation clip found in the file
-            const action = mixer.clipAction(gltf.animations[0]);
-            action.play();
+            mixer.clipAction(gltf.animations[0]).play();
         }
     },
     (xhr) => {
-        console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+        if (xhr.total) {
+            console.log((xhr.loaded / xhr.total * 100).toFixed(0) + '% loaded');
+        }
     },
     (error) => {
         console.error('An error happened', error);
     }
 );
 
-
-
-//camera
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, .1, 100);
+// camera
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
 camera.position.z = 2;
 scene.add(camera);
 
-//rendering
-const renderer = new THREE.WebGLRenderer({canvas: canvas});
+// renderer
+const renderer = new THREE.WebGLRenderer({ canvas: canvas });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.shadowMap.enabled = true;
-renderer.render(scene, camera);
 
-//resize
+// resize
 window.addEventListener('resize', () => {
-    //camera
-    camera.aspect = window.innerWidth/window.innerHeight;
+    camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
-    //renderer
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
-
-//controls
+// controls
 const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
 
-//animate
+// animate
 const animate = () => {
-// Get the time elapsed since the last frame
     const delta = clock.getDelta();
+    if (mixer) mixer.update(delta);
 
-    // Update the mixer to progress the animation
-    if (mixer) {
-        mixer.update(delta);
-    }
-    
+    controls.update();
     renderer.render(scene, camera);
-    
-    controls.update;
-    controls.enableDamping = true;
     requestAnimationFrame(animate);
-}
+};
 animate();
-
-
-
