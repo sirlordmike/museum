@@ -2,6 +2,11 @@ import * as THREE from 'https://esm.sh';
 import { OrbitControls } from 'https://esm.sh/examples/jsm/controls/OrbitControls.js';
 import { FBXLoader } from 'https://esm.sh/examples/jsm/loaders/FBXLoader.js';
 
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  base: '/sirlordmike/museum.git/',   // exactly your repository name, with slashes
+})
 
 const canvas = document.querySelector('canvas.webgl');
 let mixer;
