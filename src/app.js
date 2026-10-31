@@ -1,6 +1,7 @@
 import * as THREE from 'https://cdn.skypack.dev/three@0.132.2';
 import { FBXLoader } from 'https://skypack.dev';
-import { OrbitControls } from 'https://cdn.skypack.dev/three@0.132.2/examples/jsm/controls/OrbitControls.js';
+import { OrbitControls } from 'https://unpkg.com';
+
 const canvas = document.querySelector('canvas.webgl');
 let mixer;
 const clock = new THREE.Clock();
