@@ -12,7 +12,7 @@ const scene = new THREE.Scene();
 // light
 const ambients = new THREE.AmbientLight(0xffffff, 2);
 const dLight = new THREE.DirectionalLight(0xffffff, 3);
-dLight.position.set(.3, 1, 0);
+dLight.position.set(.6, 1, 0);
 dLight.castShadow = true;
 scene.add(ambients, dLight);
 
