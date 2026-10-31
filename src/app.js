@@ -21,7 +21,7 @@ scene.add(ambients, dLight);
 //3d Museum
 const loader = new GLTFLoader();
 loader.load(
-    '123.glb', // Replace with your GLB file path or Blob URL
+    './123.glb', // Replace with your GLB file path or Blob URL
     (gltf) => {
         const model = gltf.scene;
         scene.add(model);
