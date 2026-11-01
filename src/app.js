@@ -25,7 +25,7 @@ dLight.shadow.camera.bottom = -10;
 dLight.shadow.camera.near = 0.5;
 dLight.shadow.camera.far = 100;
 dLight.shadow.camera.updateProjectionMatrix();
-
+lightHelper.update();
 // 3D museum
 const loader = new GLTFLoader();
 loader.load(
