@@ -12,9 +12,18 @@ const scene = new THREE.Scene();
 // light
 const ambients = new THREE.AmbientLight(0xffffff, 2);
 const dLight = new THREE.DirectionalLight(0xffffff, 3);
-dLight.position.set(.6, 1, 0);
+const lightHelper = new THREE.CameraHelper(dLight.shadow.camera);
+dLight.position.set(.1, 5, 0);
 dLight.castShadow = true;
-scene.add(ambients, dLight);
+
+scene.add(ambients, dLight, lightHelper);
+dLight.shadow.camera.left = -10;
+dLight.shadow.camera.right = 10;
+dLight.shadow.camera.top = 10;
+dLight.shadow.camera.bottom = -10;
+
+dLight.shadow.camera.near = 0.5;
+dLight.shadow.camera.far = 100;
 
 // 3D museum
 const loader = new GLTFLoader();
