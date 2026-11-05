@@ -9,6 +9,43 @@
 <body>
     <canvas class="webgl"></canvas>
     <script type="module" src="/src/app.js"></script>
+    <script>
+// 1. Wait until the page loads and check if our shortcode generated the image URL
+document.addEventListener("DOMContentLoaded", function() {
+    
+    if (window.museumImageURL) {
+        console.log("Found museum image URL:", window.museumImageURL);
+
+        // 2. Initialize the Three.js Texture Loader
+        const textureLoader = new THREE.TextureLoader();
+
+        // 3. Load the image URL dynamically passed from WordPress
+        textureLoader.load(window.museumImageURL, function(texture) {
+            
+            // Adjust texture settings to prevent stretching
+            texture.wrapS = THREE.RepeatWrapping;
+            texture.wrapT = THREE.RepeatWrapping;
+            
+            // 4. Create your material using the loaded texture
+            const artMaterial = new THREE.MeshBasicMaterial({ 
+                map: texture,
+                side: THREE.DoubleSide 
+            });
+
+            // 5. Apply the material to your 3D mesh inside your scene
+            // (Replace 'yourArtworkMesh' with the actual variable name of your 3D canvas or wall mesh)
+            if (typeof yourArtworkMesh !== 'undefined') {
+                yourArtworkMesh.material = artMaterial;
+                yourArtworkMesh.material.needsUpdate = true;
+            }
+            
+            console.log("Three.js gallery texture successfully applied!");
+        });
+    } else {
+        console.warn("No museum image URL found. Using default Three.js materials.");
+    }
+});
+</script>
 
 </body>
 </html>
