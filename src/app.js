@@ -89,8 +89,8 @@ fileInput.addEventListener('change', (event) => {
         reader.onload = (e) => {
             const newTextureUrl = e.target.result;
             updateTexture(newTextureUrl);
-            reader.readAsDataURL(file);
         }
+        reader.readAsDataURL(file);
     }
 } );
 
