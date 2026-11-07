@@ -9,7 +9,9 @@
 <body>
     <canvas class="webgl"></canvas>
     <script type="module" src="/src/app.js"></script>
-    <script>
+<script>
+window.loadMuseumTexture = function(){
+    
 // 1. Wait until the page loads and check if our shortcode generated the image URL
 document.addEventListener("DOMContentLoaded", function() {
     
@@ -34,9 +36,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // 5. Apply the material to your 3D mesh inside your scene
             // (Replace 'yourArtworkMesh' with the actual variable name of your 3D canvas or wall mesh)
-            if (typeof window.pPlane2 !== 'undefined') {
-                window.pPlane2.material = artMaterial;
-            window.pPlane2.material.needsUpdate = true;
+            if (typeof windpPlane2 !== 'undefined') {
+                windpPlane2.material = artMaterial;
+            windpPlane2.material.needsUpdate = true;
             }
             
             console.log("Three.js gallery texture successfully applied!");
@@ -44,8 +46,12 @@ document.addEventListener("DOMContentLoaded", function() {
     } else {
         console.warn("No museum image URL found. Using default Three.js materials.");
     }
-});
-</script>
+})};
+
+</script>    
+
+
+
 
 </body>
 </html>
