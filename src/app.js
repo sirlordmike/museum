@@ -65,9 +65,8 @@ loader.load(
        console.log(model2.type);
        model2.traverse(child => console.log(child.name,child.type));
        const pPlane2 = model2.getObjectByName('pPlane2');
-    
        window.pPlane2 = pPlane2;
-       if(typeof loadMuseumTexture = 'function');{window.loadMuseumTexture();}
+       window.loadMuseumTexture();
     },
     
     (xhr) => {
