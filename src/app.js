@@ -30,7 +30,7 @@ lightHelper.update();
 // 3D museum
 const loader = new GLTFLoader();
 loader.load(
-    import.meta.env.BASE_URL + '1234.glb',
+    import.meta.env.BASE_URL + '12345.glb',
     (gltf) => {
         const model = gltf.scene;
         scene.add(model);
@@ -57,36 +57,23 @@ loader.load(
     }
 );
 
-// const raycaster = new THREE.Raycaster();
-// const mouse = new THREE.Vector2();
-
-// // 1. Listen for click events on the canvas/window
-// window.addEventListener('click', onPointerDown);
-
-// function onPointerDown(event) {
-//     // 2. Convert click position to normalized device coordinates (-1 to +1)
-//     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-//     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-//     // 3. Update the raycaster with the camera and mouse position
-//     raycaster.setFromCamera(mouse, camera);
-
-//     // 4. Calculate objects intersecting the picking ray
-//     // Pass `scene.children` or an array of specific meshes (set `true` for recursive check)
-//     const intersects = raycaster.intersectObjects(scene.children, true);
-
-//     if (intersects.length > 0) {
-//         // intersects[0] is the closest object hit by the ray
-//         const selectedMesh = intersects[0].object;
-
-//         console.log("Clicked mesh name:", selectedMesh.name);
-
-//         // 5. Manipulate the mesh with code, e.g., change its color or position
-//         selectedMesh.material.color.set(0xff0000);
-//         selectedMesh.position.y += 0.5;
-//     }
-// }
-
+loader.load(
+    import.meta.env.BASE_URL + 'uploadmesh.glb',
+    (gltf) => {
+        const model2 = gltf.scene;
+        scene.add(model2);
+       //odel2.visible = false
+    },
+    
+    (xhr) => {
+        if (xhr.total) {
+            console.log((xhr.loaded / xhr.total * 100).toFixed(0) + '% loaded');
+        }
+    },
+    (error) => {
+        console.error('An error happened', error);
+    }
+);
 
 
 
