@@ -78,7 +78,18 @@ loader.load(
     }
 );
 
-
+const fileInput = document.createElement('input');
+fileInput.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if(file){
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const newTextureUrl = e.target.result;
+            updateTexture(newTextureUrl);
+            reader.readAsDataURL(file);
+        }
+    }
+} );
 
 // camera
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
