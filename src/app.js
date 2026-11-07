@@ -62,7 +62,10 @@ loader.load(
     (gltf) => {
         const model2 = gltf.scene;
         scene.add(model2);
-       //odel2.visible = false
+       console.log(model2.type);
+       model2.traverse(child => console.log(child.name,child.type));
+       const pPlane2 = model2.getObjectByName(pPlane2);
+       window.pPlane2 = pPlane2;
     },
     
     (xhr) => {
