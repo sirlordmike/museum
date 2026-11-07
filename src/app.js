@@ -79,8 +79,8 @@ loader.load(
     }
 );
 
-fileInput.type = 'file';
 const fileInput = document.createElement('input');
+fileInput.type = 'file';
 document.body.appendChild(fileInput);
 fileInput.addEventListener('change', (event) => {
     const file = event.target.files[0];
