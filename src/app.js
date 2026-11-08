@@ -66,7 +66,20 @@ loader.load(
        model2.traverse(child => console.log(child.name,child.type));
        const pPlane2 = model2.getObjectByName('pPlane2');
        window.pPlane2 = pPlane2;
-       if(typeof window.loadMuseumTexture === 'function');
+
+       const params = new URLSearchParams(window.location.search);
+       const imageParam = params.get('image');
+        if(imageParam){
+            new THREE.TextureLoader().load(imageParam, (texture) => {
+                texture.colorSpace = THREE.SRGBColorSpace;
+                pPlane2.material = new THREE.MeshBasicMaterial({map: texture, 
+                    side: THREE.DoubleSide});
+              pPlane2.material.needsUpdate = true;
+              console.log('museum image applied in url');      
+            });
+        }
+
+       if(typeof window.loadMuseumTexture === 'function')
        {window.loadMuseumTexture();}
     },
     
