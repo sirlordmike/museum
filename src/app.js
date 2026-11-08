@@ -108,6 +108,11 @@ fileInput.addEventListener('change', (event) => {
     }
 } );
 
+ window.addEventListener('message', (event) => { const newImageUrl = event.data; 
+    if (newImageUrl) { updateTexture(newImageUrl); 
+        console.log('Texture updated via postMessage'); } });
+
+
 // camera
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
 camera.position.z = 2;
