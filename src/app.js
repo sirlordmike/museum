@@ -109,7 +109,7 @@ fileInput.addEventListener('change', (event) => {
 } );
 
 fetch('/wp-json/myplugin/v1/museum-image') .then(response => response.json()) .
-then(data => { document.getElementById('your-iframe-id').src = data; });
+then(data => { document.getElementById('museum-frame').src = data; });
 
 // camera
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
