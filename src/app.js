@@ -26,7 +26,6 @@ dLight.shadow.camera.near = 0.5;
 dLight.shadow.camera.far = 100;
 dLight.shadow.camera.updateProjectionMatrix();
 lightHelper.update();
-
 // 3D museum
 const loader = new GLTFLoader();
 loader.load(
@@ -56,33 +55,53 @@ loader.load(
         console.error('An error happened', error);
     }
 );
-
 loader.load(
     import.meta.env.BASE_URL + 'uploadmesh.glb',
     (gltf) => {
-        const model2 = gltf.scene;
-        scene.add(model2);
-       console.log(model2.type);
-       model2.traverse(child => console.log(child.name,child.type));
-       const pPlane2 = model2.getObjectByName('pPlane2');
-       window.pPlane2 = pPlane2;
+        const sunset = gltf.scene;
+        scene.add(sunset);
 
-       const params = new URLSearchParams(window.location.search);
-       const imageParam = params.get('image');
-        if(imageParam){
-            new THREE.TextureLoader().load(imageParam, (texture) => {
-                texture.colorSpace = THREE.SRGBColorSpace;
-                pPlane2.material = new THREE.MeshBasicMaterial({map: texture, 
-                    side: THREE.DoubleSide});
-              pPlane2.material.needsUpdate = true;
-              console.log('museum image applied in url');      
-            });
+const site = "https://kinetic-movements.local";
+
+async function applyVisitorPicture(sunset) {
+  try {
+    // 1. Get the newest museum entry (newest comes first)
+    const entries = await fetch(`${site}/wp-json/wp/v2/museum?per_page=1`)
+      .then(r => r.json());
+    if (!entries.length) return;
+
+    const imageId = entries[0].acf.image;
+    if (!imageId) return;
+
+        // 2. Turn the image ID into the actual file link
+    const media = await fetch(`${site}/wp-json/wp/v2/media/${imageId}`)
+      .then(r => r.json());
+    const imageUrl = media.source_url;
+
+    // 3. Put it on the mesh called pPlane2
+    const textureLoader = new THREE.TextureLoader();
+    textureLoader.setCrossOrigin('anonymous');
+    textureLoader.load(imageUrl, (texture) => {
+      texture.colorSpace = THREE.SRGBColorSpace;
+      texture.flipY = false;
+      sunset.traverse((child) => {
+        if (child.isMesh && child.name === "pPlane2") {
+          child.material = child.material.clone();
+          child.material.map = texture;
+          child.material.needsUpdate = true;
         }
+      });
+    });
 
-       if(typeof window.loadMuseumTexture === 'function')
-       {window.loadMuseumTexture();}
+  } catch (err) {
+    console.error("Visitor picture failed:", err);
+  }
+}
+
+// Call it right after the model is added to the scene:
+applyVisitorPicture(sunset);
+
     },
-    
     (xhr) => {
         if (xhr.total) {
             console.log((xhr.loaded / xhr.total * 100).toFixed(0) + '% loaded');
@@ -92,24 +111,6 @@ loader.load(
         console.error('An error happened', error);
     }
 );
-
-const fileInput = document.createElement('input');
-fileInput.type = 'file';
-document.body.appendChild(fileInput);
-fileInput.addEventListener('change', (event) => {
-    const file = event.target.files[0];
-    if(file){
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const newTextureUrl = e.target.result;
-            updateTexture(newTextureUrl);
-        }
-        reader.readAsDataURL(file);
-    }
-} );
-
-fetch('/wp-json/myplugin/v1/museum-image') .then(response => response.json()) .
-then(data => { document.getElementById('museum-frame').src = data; });
 
 // camera
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);

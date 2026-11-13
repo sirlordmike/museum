@@ -1,6 +1,13 @@
-import { defineConfig } from 'vite'
 
+import { defineConfig } from 'vite';
 export default defineConfig({
-  // Replace 'your-repo-name' with your actual GitHub repository name
+  server: {
+    proxy: {
+      '/wp-content': {
+        target: 'https://kinetic-movements.local',
+        changeOrigin: true,
+      },
+    },
+  },
   base: '/museum/', 
-})
+});
